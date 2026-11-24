@@ -29,10 +29,10 @@
         <input id="email" type="email" autocomplete="email" placeholder="name@example.com" required>
         <label for="password">PASSWORD</label>
         <input id="password" type="password" autocomplete="current-password" placeholder="At least 6 characters" required minlength="6">
-        <button class="button button-primary" type="submit" id="loginButton">SIGN IN <span>↗</span></button>
+        <button class="button button-primary" type="submit" id="loginButton">SIGN IN <span aria-hidden="true">↗</span></button>
       </form>
       <div class="auth-divider"><span>OR CONTINUE WITH</span></div>
-      <button class="button button-google" id="googleButton" type="button"><span class="google-g">G</span> GOOGLE</button>
+      <button class="button button-google" id="googleButton" type="button"><span class="google-g" aria-hidden="true">G</span> GOOGLE</button>
       <p class="auth-switch">NEW HERE? <button id="modeToggle" class="text-button" type="button">CREATE ACCOUNT</button></p>
       <p id="authError" class="error-message" role="alert" aria-live="polite"></p>
       <p class="tiny-note">Your records are private to your signed-in account.</p>
@@ -42,15 +42,16 @@
 
   <!-- Entire dashboard is hidden/unavailable while signed out. -->
   <div id="appView" class="app-view" hidden>
+    <a class="skip-link" href="#mainContent">SKIP TO CONTENT</a>
     <header class="topbar app-topbar">
       <span id="chapterLabel" class="eyebrow">CHAPTER 01 // LEDGER</span>
       <div class="header-actions">
         <span id="userLabel" class="user-label"></span>
-        <button id="logoutButton" class="logout-button" type="button">LOGOUT <span>↗</span></button>
+        <button id="logoutButton" class="logout-button" type="button" aria-label="Sign out of account">LOGOUT <span aria-hidden="true">↗</span></button>
       </div>
     </header>
 
-    <main class="dashboard">
+    <main id="mainContent" class="dashboard">
       <section id="overview" class="hero section-anchor">
         <div class="hero-art" aria-hidden="true">
           <div class="orb">
@@ -61,35 +62,90 @@
           </div>
         </div>
         <div class="hero-copy">
-          <p class="eyebrow">CURRENT NET BALANCE <span class="live-dot"></span></p>
+          <p class="eyebrow">CURRENT NET BALANCE <span class="live-dot" aria-hidden="true"></span></p>
           <h1 id="heroBalance" class="balance-display">IDR 0</h1>
-          <a class="scroll-cue" href="#ledger"><span>↓</span> SCROLL DOWN / TRANSACTIONS</a>
+          <div class="hero-actions">
+            <a class="button button-primary hero-cta" href="#add">＋ RECORD ENTRY <span aria-hidden="true">↗</span></a>
+            <a class="scroll-cue" href="#ledger"><span aria-hidden="true">↓</span> VIEW LEDGER</a>
+          </div>
         </div>
         <nav class="side-switcher" aria-label="Page sections">
           <a class="side-link active" href="#overview">01 / OVERVIEW</a>
           <a class="side-link" href="#analytics">02 / CHARTS</a>
-          <a class="side-link" href="#ledger">03 / LEDGER</a>
+          <a class="side-link" href="#add">03 / ENTRY</a>
+          <a class="side-link" href="#ledger">04 / LEDGER</a>
         </nav>
       </section>
 
       <section class="kpi-grid" aria-label="Financial summary">
-        <article class="kpi-card"><span class="eyebrow">01 / TOTAL BALANCE</span><strong id="totalBalance">IDR 0</strong><span class="kpi-foot">INCOME LESS EXPENSE</span></article>
-        <article class="kpi-card"><span class="eyebrow">02 / TOTAL INCOME</span><strong id="totalIncome" class="income-text">IDR 0</strong><span class="kpi-foot">MONEY RECEIVED</span></article>
-        <article class="kpi-card"><span class="eyebrow">03 / TOTAL EXPENSE</span><strong id="totalExpense" class="expense-text">IDR 0</strong><span class="kpi-foot">MONEY SPENT</span></article>
+        <article class="kpi-card">
+          <span class="eyebrow">01 / NET BALANCE</span>
+          <strong id="totalBalance">IDR 0</strong>
+          <span class="kpi-foot">INCOME LESS EXPENSE</span>
+        </article>
+        <article class="kpi-card">
+          <span class="eyebrow">02 / TOTAL INCOME</span>
+          <strong id="totalIncome" class="income-text">IDR 0</strong>
+          <span class="kpi-foot">MONEY RECEIVED</span>
+        </article>
+        <article class="kpi-card">
+          <span class="eyebrow">03 / TOTAL EXPENSE</span>
+          <strong id="totalExpense" class="expense-text">IDR 0</strong>
+          <span class="kpi-foot">MONEY SPENT</span>
+        </article>
       </section>
 
       <section id="analytics" class="content-section section-anchor">
-        <div class="section-heading"><div><p class="eyebrow">CHAPTER 02 // ANALYSIS</p><h2>THE NUMBERS<br><em>BEHIND THE NOISE.</em></h2></div><span class="section-index">02—03</span></div>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">CHAPTER 02 // ANALYSIS</p>
+            <h2>THE NUMBERS<br><em>BEHIND THE NOISE.</em></h2>
+          </div>
+          <span class="section-index">02—03</span>
+        </div>
         <div class="chart-grid">
-          <article class="panel chart-panel"><div class="panel-heading"><div><span class="eyebrow">FIG. 02</span><h3>EXPENSE BREAKDOWN</h3></div><span class="panel-meta">BY CATEGORY</span></div><div class="chart-wrap"><canvas id="expenseChart" aria-label="Expense breakdown doughnut chart"></canvas></div><p id="expenseChartEmpty" class="chart-empty">Add expenses to reveal your spending mix.</p></article>
-          <article class="panel chart-panel"><div class="panel-heading"><div><span class="eyebrow">FIG. 03</span><h3>CASH FLOW</h3></div><span class="panel-meta">LAST 6 MONTHS</span></div><div class="chart-wrap chart-wrap-wide"><canvas id="flowChart" aria-label="Income versus expense chart"></canvas></div><p id="flowChartEmpty" class="chart-empty">Your monthly cash flow will appear here.</p></article>
+          <article class="panel chart-panel">
+            <div class="panel-heading">
+              <div>
+                <span class="eyebrow">FIG. 02</span>
+                <h3>EXPENSE BREAKDOWN</h3>
+              </div>
+              <span class="panel-meta">BY CATEGORY</span>
+            </div>
+            <div class="chart-wrap">
+              <canvas id="expenseChart" role="img" aria-label="Expense breakdown doughnut chart"></canvas>
+            </div>
+            <p id="expenseChartEmpty" class="chart-empty">Add expenses to reveal your spending mix.</p>
+          </article>
+          <article class="panel chart-panel">
+            <div class="panel-heading">
+              <div>
+                <span class="eyebrow">FIG. 03</span>
+                <h3>CASH FLOW</h3>
+              </div>
+              <span class="panel-meta">LAST 6 MONTHS</span>
+            </div>
+            <div class="chart-wrap chart-wrap-wide">
+              <canvas id="flowChart" role="img" aria-label="Income versus expense bar chart"></canvas>
+            </div>
+            <p id="flowChartEmpty" class="chart-empty">Your monthly cash flow will appear here.</p>
+          </article>
         </div>
       </section>
 
-      <section class="content-section entry-section">
-        <div class="section-heading"><div><p class="eyebrow">CHAPTER 03 // QUICK ENTRY</p><h2>MAKE IT<br><em>COUNT.</em></h2></div><span class="section-index">NEW / 001</span></div>
+      <section id="add" class="content-section entry-section section-anchor">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">CHAPTER 03 // QUICK ENTRY</p>
+            <h2>MAKE IT<br><em>COUNT.</em></h2>
+          </div>
+          <span class="section-index">NEW / 001</span>
+        </div>
         <form id="transactionForm" class="panel transaction-form">
-          <div class="form-topline"><span class="eyebrow">NEW TRANSACTION</span><span class="required-note">ALL FIELDS REQUIRED</span></div>
+          <div class="form-topline">
+            <span class="eyebrow">NEW TRANSACTION</span>
+            <span class="required-note">ALL FIELDS REQUIRED</span>
+          </div>
           <div class="form-grid">
             <div class="field"><label for="txDate">DATE</label><input id="txDate" type="date" required></div>
             <div class="field"><label for="txType">TYPE</label><select id="txType" required><option value="expense">Expense</option><option value="income">Income</option></select></div>
@@ -97,12 +153,21 @@
             <div class="field"><label for="txAmount">AMOUNT (IDR)</label><input id="txAmount" type="number" min="1" step="1" inputmode="numeric" placeholder="250000" required></div>
             <div class="field field-full"><label for="txNote">SHORT NOTE</label><input id="txNote" type="text" maxlength="80" placeholder="What was this for?" required></div>
           </div>
-          <div class="form-bottom"><p id="formMessage" class="form-message" aria-live="polite"></p><button class="button button-primary" type="submit" id="saveButton">ADD TO LEDGER <span>↗</span></button></div>
+          <div class="form-bottom">
+            <p id="formMessage" class="form-message" aria-live="polite"></p>
+            <button class="button button-primary" type="submit" id="saveButton">ADD TO LEDGER <span aria-hidden="true">↗</span></button>
+          </div>
         </form>
       </section>
 
       <section id="ledger" class="content-section ledger-section section-anchor">
-        <div class="section-heading"><div><p class="eyebrow">CHAPTER 04 // RECORDS</p><h2>THE<br><em>LEDGER.</em></h2></div><span class="section-index">04—∞</span></div>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">CHAPTER 04 // RECORDS</p>
+            <h2>THE<br><em>LEDGER.</em></h2>
+          </div>
+          <span class="section-index">04—∞</span>
+        </div>
         <div class="ledger-toolbar">
           <div class="filters">
             <div class="field compact-field"><label for="monthFilter">MONTH</label><input id="monthFilter" type="month"></div>
@@ -111,17 +176,27 @@
           <div class="monthly-summary"><span class="eyebrow">FILTERED NET</span><strong id="monthlyNet">IDR 0</strong></div>
         </div>
         <div class="panel ledger-panel">
-          <div class="ledger-head"><span>DATE / DESCRIPTION</span><span>TYPE</span><span>AMOUNT</span><span></span></div>
-          <div id="transactionList" class="transaction-list"><div class="empty-state">YOUR LEDGER IS QUIET.<br><span>ADD A TRANSACTION TO BEGIN.</span></div></div>
+          <div class="ledger-head"><span>DATE / DESCRIPTION</span><span>TYPE</span><span>AMOUNT</span><span>ACTION</span></div>
+          <div id="transactionList" class="transaction-list">
+            <div class="empty-state">YOUR LEDGER IS QUIET.<br><span>ADD A TRANSACTION TO BEGIN.</span></div>
+          </div>
         </div>
       </section>
-      <footer class="page-footer"><span>CHAPTER 01 — LEDGER</span><span>KEEP THE SIGNAL. LOSE THE NOISE.</span><span id="footerCount">000 RECORDS</span></footer>
+
+      <footer class="page-footer">
+        <span>CHAPTER 01 — LEDGER</span>
+        <span>KEEP THE SIGNAL. LOSE THE NOISE.</span>
+        <span id="footerCount" aria-live="polite">000 RECORDS</span>
+      </footer>
     </main>
 
     <nav class="bottom-nav" aria-label="Main navigation">
-      <a href="#overview">HOME</a><a href="#analytics">ANALYTICS</a><a href="#add" id="addNav">＋ ADD</a><a href="#ledger">HISTORY</a>
-      <button id="currencyToggle" class="currency-toggle" type="button">IDR / USD</button>
-      <span id="transactionCount" class="transaction-count">000</span>
+      <a href="#overview">HOME</a>
+      <a href="#analytics">CHARTS</a>
+      <a href="#add" id="addNav" class="nav-add">＋ ADD</a>
+      <a href="#ledger">LEDGER</a>
+      <button id="currencyToggle" class="currency-toggle" type="button" aria-label="Switch display currency between IDR and USD">IDR / USD</button>
+      <span id="transactionCount" class="transaction-count" aria-label="Total transaction count">000</span>
     </nav>
   </div>
 
